@@ -3,7 +3,13 @@ package main
 import (
 	"html/template"
 	"net/http"
+	"os"
 )
+
+type Person struct {
+	Name string
+	Age int
+}
 
 func tmpl(w http.ResponseWriter, r *http.Request) {
 	// 解析 html 文件，自动创建一个模板，关联到变量 t1 上
@@ -18,9 +24,13 @@ func tmpl(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	server := http.Server{
-		Addr: "127.0.0.1:8080",
-	}
-	http.HandleFunc("/tmpl", tmpl)
-	server.ListenAndServe()
+	//server := http.Server{
+	//	Addr: "127.0.0.1:8080",
+	//}
+	//http.HandleFunc("/tmpl", tmpl)
+	//server.ListenAndServe()
+
+	p := Person{"MiracleWong", 29}
+	tmpl, _ := template.New("test").Parse("Name: {{.Name}}, Age: {{.Age}}")
+	_ = tmpl.Execute(os.Stdout, p)
 }
